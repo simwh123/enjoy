@@ -1,0 +1,18 @@
+{
+    "java.project.sourcePaths": [
+        ".",
+        "da001"
+    ],
+    "java.project.referencedLibraries": [
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc8.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc8_g.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc8dms.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc8dms_g.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc11.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc11_g.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc11dms.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\ojdbc11dms_g.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\rsi.jar",
+        "c:\\app\\PKNU\\product\\21c\\dbhomeXE\\jdbc\\lib\\simplefan.jar"
+    ]
+}
