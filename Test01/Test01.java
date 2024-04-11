@@ -2,6 +2,9 @@ package Test01;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.plaf.synth.SynthStyle;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,23 +13,38 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Test01 {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws SQLException {
         Join jo = new Join();
         money mo = new money();
         Scanner sc = new Scanner(System.in);
-
+        Test02 cone = new Test02();
+        cone.connect();
         while (true) {
-            System.out.println("회원가입:1 로그인:2 금액충전:3 상품구입:4 장바구니:5 종료:6");
+            System.out.println("회원가입:1 로그인:2 종료:3");
             String var1 = sc.nextLine();
+
             if (var1.equals("1")) {
                 System.out.println("회원가입");
+
                 System.out.println("아이디를 입력하세요");
                 String var2 = sc.nextLine();
-                System.out.println("비밀번호를 입력하세요");
-                String var3 = sc.nextLine();
-                System.out.println("이름을 입력하세요");
-                String var4 = sc.nextLine();
-                jo.Join(var2, var3, var4);
+
+                while (true) {
+                    System.out.println("비밀번호를 입력하세요 (4자 이상 8자 이하)");
+                    String var3 = sc.nextLine();
+                    if (var3.length() < 4) {
+                        System.out.println("비밀번호는 4자 이상으로 입력하세요");
+                        continue;
+                    } else if (var3.length() > 8) {
+                        System.out.println("비밀번호는 8자 이하로 입력하세요");
+                        continue;
+                    } else {
+                        System.out.println("이름을 입력하세요");
+                        String var4 = sc.nextLine();
+                        cone.per(var2, var3, var4);
+                        break;
+                    }
+                }
 
             } else if (var1.equals("2")) {
                 System.out.println("로그인");
@@ -34,14 +52,15 @@ public class Test01 {
                 String var2 = sc.nextLine();
                 System.out.println("비밀번호를 입력하세요");
                 String var3 = sc.nextLine();
-                System.out.println("이름을 입력하세요");
-                String var4 = sc.nextLine();
-                boolean var5 = jo.lst.contains(var2 + "/" + var3 + "/" + var4);
-                if (var5 == true) {
-                    System.out.println("로그인 성공");
+                cone.road(var2, var3);
 
-                }
             } else if (var1.equals("3")) {
+                System.out.println("종료");
+                cone.databaseClose();
+                break;
+            }
+
+            else if (var1.equals("3")) {
                 System.out.println("금액충전");
                 int mo1 = sc.nextInt();
                 sc.nextLine();
@@ -57,10 +76,6 @@ public class Test01 {
                 // mo.var1 -= 2000;
             } else if (var1.equals("5")) {
                 System.out.println("장바구니");
-            } else if (var1.equals("6")) {
-                System.out.println("종료");
-                break;
-            } else if (var1.equals("7")) {
                 System.out.println("리스트확인");
                 for (int i = 0; i < jo.lst.size(); i++) {
                     System.out.println(jo.lst.get(i));
@@ -119,40 +134,5 @@ class model {
         for (int i = 0; i < lst.size(); i++) {
             lst.add(a + "/" + b);
         }
-    }
-}
-
-class Con {
-
-    public void cone(String n, int p) throws ClassNotFoundException, SQLException {
-        Statement stmt = null;
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "ATOM";
-        String pw = "1234";
-        String sql = "SELECT * FROM DATA";
-        con = DriverManager.getConnection(url, user, pw);
-        System.out.println("연결 성공");
-        String name = n;
-        int price = p;
-        String updateStr = "INSERT INTO DATA VALUES (" + "'" + name + "'" + "," + "'" + price + "'" + ")";
-
-        try {
-            String checkingStr = "SELECT * FROM DATA WHERE NAME='" + name + "'";
-            ResultSet result = stmt.executeQuery(checkingStr);
-            if (result.next() == false) {
-                pstmt = con.prepareStatement(updateStr);
-                pstmt.executeUpdate();
-
-            } else {
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 }
