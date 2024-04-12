@@ -15,7 +15,6 @@ import java.sql.Statement;
 public class Test01 {
     public static void main(String[] args) throws SQLException {
         Join jo = new Join();
-        money mo = new money();
         Scanner sc = new Scanner(System.in);
         Test02 cone = new Test02();
         cone.connect();
@@ -60,35 +59,6 @@ public class Test01 {
                 break;
             }
 
-            else if (var1.equals("3")) {
-                System.out.println("금액충전");
-                int mo1 = sc.nextInt();
-                sc.nextLine();
-                if (mo1 > 0) {
-                    mo.money(mo1);
-                } else {
-                    System.out.println("입력을 확인해주세요");
-                }
-
-            } else if (var1.equals("4")) {
-                System.out.println("상품구입");
-
-                // mo.var1 -= 2000;
-            } else if (var1.equals("5")) {
-                System.out.println("장바구니");
-                System.out.println("리스트확인");
-                for (int i = 0; i < jo.lst.size(); i++) {
-                    System.out.println(jo.lst.get(i));
-                }
-            } else if (var1.equals("8")) {
-                System.out.println("금액확인");
-                System.out.println(mo.var1);
-
-            } else {
-                System.out.println("입력값을 확인해 주세요");
-
-            }
-
         }
     }
 }
@@ -108,31 +78,5 @@ class Join {
             lst.add(ID + "/" + PW + "/" + name);
         }
 
-    }
-}
-
-class Login {
-
-}
-
-class money {
-    int var1 = 0;
-
-    public void money(int var1) {
-        this.var1 += var1;
-    }
-}
-
-class model {
-    ArrayList<String> lst = new ArrayList<String>();
-    String a;
-    int b;
-
-    public void model(String a, int b) {
-        this.a = a;
-        this.b = b;
-        for (int i = 0; i < lst.size(); i++) {
-            lst.add(a + "/" + b);
-        }
     }
 }
