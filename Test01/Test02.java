@@ -36,14 +36,6 @@ public class Test02 {
         }
     }
 
-    public void model(int a, String n, int p) throws SQLException { // 관리자모드에서 상품등록
-        String name = n;
-        int price = p;
-        String updateStr = "INSERT INTO DATA VALUES ( '" + a + "', '" + name + "', '" + price + "' )";
-        pstmt = con.prepareStatement(updateStr);
-        pstmt.executeUpdate();
-    }
-
     public void per(String i, String p, String n) { // 회원가입시 아이디 중복여부 체크
         String sql = "SELECT * FROM PR";
         try {
@@ -128,7 +120,7 @@ public class Test02 {
             } else if (a.equals(ID) && b.equals(PW)) {
                 System.out.println("로그인성공");
                 while (true) {
-                    System.out.println("1. 금액충전 , 2. 장바구니 , 3. 상품구입 , 4. 로그아웃 ");
+                    System.out.println("1. 금액충전 , 2. 장바구니 , 3. 상품구입 , 4. 잔액확인 , 5. 로그아웃 ");
                     String var1 = sc.nextLine();
                     if (var1.equals("1")) {
 
@@ -182,6 +174,9 @@ public class Test02 {
                         sell(var2, ID, var3);
 
                     } else if (var1.equals("4")) {
+                        System.out.println("잔액조회");
+                        views(ID);
+                    } else if (var1.equals("5")) {
                         break;
                     }
                 }
@@ -215,7 +210,8 @@ public class Test02 {
         while (rs.next()) {
             c = rs.getInt("MONEY");
         }
-        if (c >= a) {
+        if (c >= a * d) {
+            System.out.println(a + "//" + c);
             String updateStr = "UPDATE PR SET MONEY = NVL((SELECT MONEY FROM PR WHERE ID = '" + ID
                     + "'),0) -" + money * d + " WHERE ID = '" + ID + "'";
             pstmt = con.prepareStatement(updateStr);
@@ -228,7 +224,7 @@ public class Test02 {
         }
     }
 
-    public void ad(String a) throws SQLException {
+    public void ad(String a) throws SQLException { // 관리자모드 메인화면
         String sql = "SELECT * FROM PR";
         while (true) {
             System.out.println("1. 회원목록  2. 상품등록  3. 상품삭제  4. 상품목록  5. 로그아웃  99. 금액충전");
@@ -263,6 +259,7 @@ public class Test02 {
                 } catch (Exception e) {
 
                     System.out.println("입력값을 확인하세요");
+                    sc.nextLine();
                 }
 
             } else if (var1.equals("3")) {
@@ -298,18 +295,18 @@ public class Test02 {
         }
     }
 
-    public void md(int a, String b, int c) {
+    public void md(int a, String b, int c) { // 관리자모드에서 상품등록
         try {
             String updateStr = "INSERT INTO DATA VALUES ('" + a + "','" + b + "','" + c + "')";
             pstmt = con.prepareStatement(updateStr);
             pstmt.executeUpdate();
             System.out.println("상품등록 성공!");
         } catch (SQLException e) {
-            System.out.println("상품등록 실패! \n 번호 중복을 확인해주세요");
+            System.out.println("상품등록 실패! \n번호 중복을 확인해주세요");
         }
     }
 
-    public void del(int a, String b) {
+    public void del(int a, String b) { // 관리자모드에서 상품삭제
 
         try {
             String updateStr = "DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'";
@@ -323,7 +320,7 @@ public class Test02 {
 
     }
 
-    public void lst1() throws SQLException {
+    public void lst1() throws SQLException { // 상품의 고유번호, 이름, 가격을 출력
         String sql1 = "SELECT * FROM DATA";
         stmt = con.createStatement();
         rs = stmt.executeQuery(sql1);
@@ -335,7 +332,8 @@ public class Test02 {
         }
     }
 
-    public void sell(int a, String b, int c) throws SQLException {
+    public void sell(int a, String b, int c) throws SQLException { // 상품의 번호를 받아 상품의 가격을 출력해주고 money1이라는 메소드를 호출하여 상품을
+                                                                   // 구매
         String sql = "SELECT * FROM DATA WHERE NO =" + a;
         rs = stmt.executeQuery(sql);
         while (rs.next()) {
@@ -346,8 +344,8 @@ public class Test02 {
 
     }
 
-    public void bk(String a, int b, int c) throws SQLException {
-        String v1 = "";
+    public void bk(String a, int b, int c) throws SQLException { // 고객의 장바구니 상품을 넣는다
+        String v1 = ""; // 고객의 아이디와 상품의 이름이 같다면 같은 행에 수량과 총가격이 업데이트된다
         String v2 = "";
         String NAME = "";
         int PRICE = 0;
@@ -382,7 +380,7 @@ public class Test02 {
 
     }
 
-    public void bklst(String a) throws SQLException {
+    public void bklst(String a) throws SQLException { // 고객의 장바구니에 들어가있는 목록
         String sql1 = "SELECT * FROM BK WHERE US = '" + a + "'";
         stmt = con.createStatement();
         rs = stmt.executeQuery(sql1);
@@ -395,10 +393,10 @@ public class Test02 {
         }
     }
 
-    public void sell1(String a) throws SQLException {
+    public void sell1(String a) throws SQLException { // 고객의 장바구니에 물품 일괄결제
         int b = 0;
         int PRICE = 0;
-        int NUM = 0;
+        int NUM = 0; // 추후에 수량변경을 위한 변수
         String sql = "SELECT * FROM BK WHERE US = '" + a + "'";
         rs = stmt.executeQuery(sql);
 
@@ -421,14 +419,15 @@ public class Test02 {
             pstmt.executeUpdate();
             pstmt = con.prepareStatement(sql2);
             pstmt.executeUpdate();
+            System.out.println("상품 결제 완료!");
         } else {
             System.out.println("잔액이 부족합니다.");
         }
 
     }
 
-    public void del1(String a, String b) {
-
+    public void del1(String a, String b) { // 고객의 장바구니 물품 삭제
+                                           // 물품을 일괄삭제 시키기때문에 추후 수정을통해 수량을 빼게 만들어야한다
         try {
             String updateStr = "DELETE FROM BK WHERE US = '" + a + "' AND NAME = '" + b + "'";
             pstmt = con.prepareStatement(updateStr);
@@ -438,6 +437,16 @@ public class Test02 {
             System.out.println("DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'");
             System.out.println("상품삭제 실패! \n 입력을 다시 확인해주세요");
         }
+
+    }
+
+    public void views(String a) throws SQLException { // 고객의 잔액확인
+        String sql = "SELECT MONEY FROM PR WHERE ID = '" + a + "'";
+        stmt = con.createStatement();
+        rs = stmt.executeQuery(sql);
+        rs.next();
+        int b = rs.getInt("MONEY");
+        System.out.println(a + " 고객님의 잔액은 " + b + "원 입니다.");
 
     }
 

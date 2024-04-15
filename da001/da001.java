@@ -173,13 +173,15 @@ class Da003 extends Thread {
             }
 
         });
-        while (true) {
+        boolean ttt = true;
+        while (ttt) {
             for (int i = 0; i < var2.length; i++) {
 
                 if (var2[i].getY() >= JL.getY() - 10 && var2[i].getX() + 10 >= JL.getX()
                         && var2[i].getX() - 10 <= JL.getX()) {
                     System.out.println("게임종료");
-                    break;
+                    ttt = false;
+
                 } else if (var2[i].getY() >= 200) {
                     var2[i].setLocation(rand.nextInt(200), -40);
                 } else if (var2[i].getY() < 200) {
@@ -193,6 +195,7 @@ class Da003 extends Thread {
                 }
 
             }
+
         }
 
     }

@@ -1,20 +1,10 @@
 package Test01;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.plaf.synth.SynthStyle;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Test01 {
     public static void main(String[] args) throws SQLException {
-        Join jo = new Join();
         Scanner sc = new Scanner(System.in);
         Test02 cone = new Test02();
         cone.connect();
@@ -60,23 +50,5 @@ public class Test01 {
             }
 
         }
-    }
-}
-
-class Join {
-    String ID;
-    String PW;
-    String name;
-    ArrayList<String> lst = new ArrayList<String>();
-
-    public void Join(String ID, String PW, String name) {
-        this.ID = ID;
-        this.PW = PW;
-        this.name = name;
-        boolean var1 = lst.contains(ID + "/" + PW + "/" + name);
-        if (var1 == false) {
-            lst.add(ID + "/" + PW + "/" + name);
-        }
-
     }
 }
