@@ -135,32 +135,49 @@ public class Test02 {
                             e.printStackTrace();
                         }
                     } else if (var1.equals("2")) {
-                        System.out.println("1. 장바구니에 상품 넣기   2. 장바구니 목록   3. 장바구니 결제     4. 장바구니 비우기");
-                        String bt1 = sc.nextLine();
-                        if (bt1.equals("1")) {
-                            System.out.println("상품을 골라주세요");
-                            lst1();
-                            System.out.println("장바구니에 넣을 상품의 번호를 입력해주세요.");
-                            try {
-                                int var2 = sc.nextInt();
-                                sc.nextLine();
-                                System.out.println("장바구니에 넣을 수량을 입력해주세요.");
-                                int var3 = sc.nextInt();
-                                sc.nextLine();
-                                bk(ID, var3, var2);
-                            } catch (Exception e) {
-                                sc.nextLine();
-                                System.out.println("입력값을 확인해 주세요.");
+                        while (true) {
+
+                            System.out.println("1. 장바구니에 상품 넣기   2. 장바구니 목록   3. 장바구니 결제    4. 장바구니 비우기    5. 뒤로가기");
+                            String bt1 = sc.nextLine();
+                            if (bt1.equals("1")) {
+                                System.out.println("상품을 골라주세요");
+                                lst1();
+                                System.out.println("장바구니에 넣을 상품의 번호를 입력해주세요.");
+                                try {
+                                    int var2 = sc.nextInt();
+                                    sc.nextLine();
+                                    System.out.println("장바구니에 넣을 수량을 입력해주세요.");
+                                    int var3 = sc.nextInt();
+                                    sc.nextLine();
+                                    bk(ID, var3, var2);
+                                } catch (Exception e) {
+                                    sc.nextLine();
+                                    System.out.println("입력값을 확인해 주세요.");
+                                }
+                            } else if (bt1.equals("2")) {
+                                bklst(ID);
+                                while (true) {
+                                    System.out.print("1. 수량 변경      2. 뒤로가기");
+                                    String var2 = sc.nextLine();
+                                    if (var2.equals("1")) {
+                                        String var3 = sc.nextLine();
+                                    } else if (var2.equals("2")) {
+                                        break;
+                                    } else {
+                                        System.out.print("입력값을 확인하세요");
+                                    }
+
+                                }
+                            } else if (bt1.equals("3")) {
+                                sell1(ID);
+                            } else if (bt1.equals("4")) {
+                                bklst(ID);
+                                System.out.println("삭제하실 목록의 이름을 선택해주세요");
+                                String var3 = sc.nextLine();
+                                del1(ID, var3);
+                            } else if (bt1.equals("5")) {
+                                break;
                             }
-                        } else if (bt1.equals("2")) {
-                            bklst(ID);
-                        } else if (bt1.equals("3")) {
-                            sell1(ID);
-                        } else if (bt1.equals("4")) {
-                            bklst(ID);
-                            System.out.println("삭제하실 목록의 이름을 선택해주세요");
-                            String var3 = sc.nextLine();
-                            del1(ID, var3);
                         }
                     } else if (var1.equals("3")) {
                         System.out.println("상품을 구매합니다.");
@@ -448,6 +465,40 @@ public class Test02 {
         int b = rs.getInt("MONEY");
         System.out.println(a + " 고객님의 잔액은 " + b + "원 입니다.");
 
+    }
+
+    public void bkup(String ID, int money) {
+        String sql = "UPDATE BK SET ONE = NVL((SELECT ONE FROM BK WHERE ID = '" + ID
+                + "'),0) -" + money + " WHERE ID = '" + ID + "'";
+    }
+
+    public void road1(String a, String b, boolean c) throws SQLException { // 로그인시 등장하는 메인화면 관리자모드 / 사용자모드로 나눔 관리자모드
+                                                                           // ID: sim PW:// 1234
+        String ID;
+        String PW;
+        String sql = "SELECT * FROM PR WHERE" + " ID =" + "'" + a + "'";
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        if (rs.next()) {
+            ID = rs.getString("ID");
+            PW = rs.getString("PW");
+            if (a.equals("sim") && b.equals("1234")) {
+                System.out.println("관리자로 접속합니다.");
+                c = true;
+
+            } else if (a.equals(ID) && b.equals(PW)) {
+                System.out.println("로그인성공");
+                c = true;
+            } else {
+                System.out.println("로그인실패");
+            }
+        }
     }
 
 }

@@ -16,6 +16,7 @@ public class Test03 {
     public static void main(String[] args) {
         Test02 ts = new Test02();
         JFrame jf = new JFrame();
+        JFrame jf1 = new JFrame();
         Scanner sc = new Scanner(System.in);
         JLabel jl = new JLabel();
         ts.connect();
@@ -28,21 +29,31 @@ public class Test03 {
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setSize(500, 500);
         jf.setLayout(new FlowLayout());
-        jl.setText("잔액조회");
 
-        panel.add(jl);
-        panel.add(msg);
-        panel.add(btn1);
-        panel.add(btn2);
-        jf.add(panel);
+        jf1.setLayout(null);
+        jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf1.setSize(500, 500);
+        // jf1.setLayout(new FlowLayout());
 
-        btn1 = new JButton("확인");
-        JLabel j2 = new JLabel("아이디");
+        // jl.setText("잔액조회");
+        // panel.add(jl);
+        // panel.add(msg);
+        // panel.add(btn1);
+        // panel.add(btn2);
+        // jf.add(panel);
+
+        JButton btn3 = new JButton("로그인");
+        JLabel j2 = new JLabel("ID");
+        JLabel j3 = new JLabel("PW");
         JTextField msg1 = new JTextField(10);
-        panel.add(j2);
-        panel.add(msg1);
-        panel.add(btn1);
-        jf.add(panel);
+        JTextField msg2 = new JTextField(10);
+        JPanel panel1 = new JPanel();
+        panel1.add(j2);
+        panel1.add(msg1);
+        panel1.add(j3);
+        panel1.add(msg2);
+        panel1.add(btn3);
+        jf.add(panel1);
 
         btn1.addActionListener(event -> {
             String Msg = msg.getText();
@@ -57,6 +68,22 @@ public class Test03 {
         btn2.addActionListener(event -> {
             System.out.println("닫기");
             ts.databaseClose();
+        });
+        btn3.addActionListener(event -> {
+            String Msg1 = msg1.getText();
+            String Msg2 = msg2.getText();
+            boolean c = false;
+            try {
+                ts.road1(Msg1, Msg2, c);
+                System.out.println(c);
+                if (c == true) {
+                    jf.dispose();
+                    jf1.setVisible(true);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
 
         jf.setVisible(true);
