@@ -20,24 +20,6 @@ public class Test02 {
     ResultSet rs = null;
     ResultSet rs1 = null;
 
-    // public void connect() { // 데이터베이스 연결
-
-    // try {
-    // Class.forName("oracle.jdbc.driver.OracleDriver");
-    // System.out.println("JDBC Driver 로드 성공!!");
-    // String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    // String user = "ATOM";
-    // String pw = "1234";
-    // con = DriverManager.getConnection(url, user, pw);
-    // stmt = con.createStatement();
-    // stmt1 = con.createStatement();
-
-    // System.out.println("연결 성공");
-    // } catch (ClassNotFoundException | SQLException e) {
-    // e.printStackTrace();
-    // }
-    // }
-
     public void per(String ID, String PW, String NAME) { // 회원가입시 아이디 중복여부 체크
         String sql = "SELECT * FROM PR";
         try {
@@ -116,7 +98,7 @@ public class Test02 {
         if (rs.next()) {
             ID = rs.getString("ID");
             PW = rs.getString("PW");
-            if (a.equals("sim") && b.equals("1234")) {
+            if (a.equals("sim") && b.equals(PW)) {
                 System.out.println("관리자로 접속합니다.");
                 ad(ID);
             } else if (a.equals(ID) && b.equals(PW)) {
@@ -125,6 +107,7 @@ public class Test02 {
                     System.out.println("1. 금액충전 , 2. 장바구니 , 3. 상품구입 , 4. 잔액확인 , 5. 로그아웃 ");
                     String var1 = sc.nextLine();
                     if (var1.equals("1")) {
+                        System.out.print("\033\143");
 
                         try {
                             System.out.println("충전할 금액을 입력하세요");
@@ -139,12 +122,15 @@ public class Test02 {
                             e.printStackTrace();
                         }
                     } else if (var1.equals("2")) {
+                        System.out.print("\033\143");
                         while (true) {
+
                             bklst(ID);
                             System.out
                                     .println("1. 장바구니에 상품 넣기   2. 장바구니 상품 수량변경   3. 장바구니 결제    4. 장바구니 비우기    5. 뒤로가기");
                             String bt1 = sc.nextLine();
                             if (bt1.equals("1")) {
+                                System.out.print("\033\143");
                                 System.out.println("상품을 골라주세요");
                                 lst1();
                                 System.out.println("장바구니에 넣을 상품의 번호를 입력해주세요.");
@@ -154,15 +140,17 @@ public class Test02 {
                                     System.out.println("장바구니에 넣을 수량을 입력해주세요.");
                                     int var3 = sc.nextInt();
                                     sc.nextLine();
-                                    System.out.print("\033\143");
                                     bk(ID, var3, var2);
 
                                 } catch (Exception e) {
-                                    sc.nextLine();
+                                    System.out.print("\033\143");
                                     System.out.println("입력값을 확인해 주세요.");
+                                    sc.nextLine();
                                 }
                             } else if (bt1.equals("2")) {
+                                System.out.print("\033\143");
                                 while (true) {
+
                                     System.out.print("1. 수량 변경      2. 뒤로가기");
                                     String var2 = sc.nextLine();
                                     if (var2.equals("1")) {
@@ -171,6 +159,7 @@ public class Test02 {
                                         System.out.println("수량을 변경할 숫자를 입력하세요");
                                         int var4 = sc.nextInt();
                                         sc.nextLine();
+                                        System.out.print("\033\143");
                                         bkup(ID, var4, var3);
 
                                     } else if (var2.equals("2")) {
@@ -178,12 +167,15 @@ public class Test02 {
                                         break;
                                     } else {
                                         System.out.print("입력값을 확인하세요");
+
                                     }
 
                                 }
                             } else if (bt1.equals("3")) {
+                                System.out.print("\033\143");
                                 sell1(ID);
                             } else if (bt1.equals("4")) {
+                                System.out.print("\033\143");
                                 bklst(ID);
                                 System.out.println("삭제하실 목록의 이름을 선택해주세요");
                                 String var3 = sc.nextLine();
@@ -194,6 +186,7 @@ public class Test02 {
                             }
                         }
                     } else if (var1.equals("3")) {
+                        System.out.print("\033\143");
                         System.out.println("상품을 구매합니다.");
                         lst1();
                         System.out.println("구매할 상품의 번호를 입력하세요.");
@@ -245,24 +238,33 @@ public class Test02 {
             while (rs.next()) {
                 c = rs.getInt("MONEY");
             }
-            if (c >= a * d) {
+            if (d == 0) {
+                System.out.println("구입하시는 수량을 확인하세요");
+
+            } else if (c >= a * d) {
                 System.out.println(a + "//" + c);
                 String updateStr = "UPDATE PR SET MONEY = NVL((SELECT MONEY FROM PR WHERE ID = '" + ID
                         + "'),0) -" + money * d + " WHERE ID = '" + ID + "'";
                 String sql4 = "INSERT INTO SELL VALUES ('" + ID + "','" + n + "','" + d + "')";
                 pstmt = con.prepareStatement(updateStr);
                 pstmt.executeUpdate();
+                System.out.print("\033\143");
                 System.out.println("구매가 정상 처리 되었습니다.");
                 int dd = c - money * d;
                 System.out.println("잔액은 " + dd + "원 입니다.");
-                pstmt = con.prepareStatement(sql4);
-                pstmt.executeUpdate();
+                if (d > 0) {
+                    pstmt = con.prepareStatement(sql4);
+                    pstmt.executeUpdate();
+                }
             } else if (n == null) {
+                System.out.print("\033\143");
                 System.out.println("입력을 확인하세요");
             } else {
+                System.out.print("\033\143");
                 System.out.println("잔액이 부족합니다.");
             }
         } catch (SQLException e) {
+            System.out.print("\033\143");
             System.out.println("입력값을 확인하세요");
         }
     }
@@ -275,7 +277,7 @@ public class Test02 {
             rs = stmt.executeQuery(sql);
             String var1 = sc.nextLine();
             if (var1.equals("1")) {
-
+                System.out.print("\033\143");
                 System.out.println("회원 정보 출력");
                 while (rs.next()) {
                     String ID = rs.getString("ID");
@@ -286,7 +288,7 @@ public class Test02 {
                     System.out.println("ID:" + ID + "  PW:" + PW + "  이름:" + NAME + "  잔액:" + MONEY);
                 }
             } else if (var1.equals("2")) {
-
+                System.out.print("\033\143");
                 System.out.println("상품을 등록합니다.");
                 System.out.println("상품 번호를 입력해주세요");
 
@@ -321,6 +323,7 @@ public class Test02 {
                 }
 
             } else if (var1.equals("4")) {
+                System.out.print("\033\143");
                 lst1();
             } else if (var1.equals("99")) {
                 try {
@@ -328,6 +331,7 @@ public class Test02 {
                     int var2 = sc.nextInt();
                     sc.nextLine();
                     money(var2, a);
+                    System.out.print("\033\143");
                     System.out.println(var2 + "원이 충전되었습니다.");
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -346,21 +350,35 @@ public class Test02 {
             String updateStr = "INSERT INTO DATA VALUES ('" + a + "','" + b + "','" + c + "')";
             pstmt = con.prepareStatement(updateStr);
             pstmt.executeUpdate();
+            System.out.print("\033\143");
             System.out.println("상품등록 성공!");
         } catch (SQLException e) {
+            System.out.print("\033\143");
             System.out.println("상품등록 실패! \n번호 중복을 확인해주세요");
         }
     }
 
     public void del(int a, String b) { // 관리자모드에서 상품삭제
-
+        boolean c = false;
         try {
             String updateStr = "DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'";
-            pstmt = con.prepareStatement(updateStr);
-            pstmt.executeUpdate();
-            System.out.println("상품삭제 성공!");
+            String sql = "SELECT * FROM DATA WHERE NO = '" + a + "'";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                c = true;
+            }
+            if (c == true) {
+                pstmt = con.prepareStatement(updateStr);
+                pstmt.executeUpdate();
+                System.out.print("\033\143");
+                System.out.println("상품삭제 성공!");
+            } else if (c == false) {
+                System.out.print("\033\143");
+                System.out.println("삭제할 상품이 없습니다.");
+            }
         } catch (SQLException e) {
-            System.out.println("DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'");
+            System.out.print("\033\143");
             System.out.println("상품삭제 실패! \n 입력을 다시 확인해주세요");
         }
 
@@ -400,38 +418,54 @@ public class Test02 {
 
     }
 
-    public void bk(String a, int b, int c) throws SQLException { // 고객의 장바구니 상품을 넣는다
-        String v1 = ""; // 고객의 아이디와 상품의 이름이 같다면 같은 행에 수량과 총가격이 업데이트된다
+    public void bk(String a, int b, int c) {
+        // 고객의 장바구니 상품을 넣는다
+        // 고객의 아이디와 상품의 이름이 같다면 같은 행에 수량과 총가격이 업데이트된다
+        String v1 = "";
         String v2 = "";
         String NAME = "";
         int PRICE = 0;
-        String sql1 = "SELECT * FROM DATA WHERE NO = " + c;
-        rs = stmt.executeQuery(sql1);
-        while (rs.next()) {
-            NAME = rs.getString("NAME");
-            PRICE = rs.getInt("PRICE");
-        }
-        String sql2 = "SELECT US,NAME FROM BK WHERE US = '" + a + "' AND NAME = '" + NAME + "'";
-        rs1 = stmt.executeQuery(sql2);
-        while (rs1.next()) {
-            v1 = rs1.getString("US");
-            v2 = rs1.getString("NAME");
-        }
-        if (a.equals(v1) && NAME.equals(v2)) {
-            String updateStr = "UPDATE BK SET US = '" + a + "', NAME = '" + NAME + "',PRICE = " + PRICE
-                    + ", ONE = NVL((SELECT ONE FROM BK WHERE US = '" + a + "' AND ROWNUM = 1),0)+" + b
-                    + ", TWO = NVL((SELECT TWO FROM BK WHERE US = '" + a + "' AND ROWNUM = 1),0)+" + PRICE * b
-                    + " WHERE US = '" + a + "' AND NAME = '" + NAME + "'";
-            pstmt = con.prepareStatement(updateStr);
-            pstmt.executeUpdate();
 
-        } else {
-            String sql = "INSERT INTO BK VALUES ('" + a + "','" + NAME + "','" + PRICE +
-                    "','" + b + "', '"
-                    + PRICE * b
-                    + "')";
-            stmt.executeQuery(sql);
-            System.out.println("장바구니에 저장되었습니다.");
+        String sql1 = "SELECT * FROM DATA WHERE NO = " + c;
+        try {
+            rs = stmt.executeQuery(sql1);
+            while (rs.next()) {
+                NAME = rs.getString("NAME");
+                PRICE = rs.getInt("PRICE");
+
+            }
+
+            String sql2 = "SELECT US,NAME FROM BK WHERE US = '" + a + "' AND NAME = '" + NAME + "'";
+            rs1 = stmt.executeQuery(sql2);
+            while (rs1.next()) {
+                v1 = rs1.getString("US");
+                v2 = rs1.getString("NAME");
+
+            }
+            if (a.equals(v1) && NAME.equals(v2)) {
+                String updateStr = "UPDATE BK SET US = '" + a + "', NAME = '" + NAME + "',PRICE = " + PRICE
+                        + ", ONE = NVL((SELECT ONE FROM BK WHERE US = '" + a + "' AND NAME = '" + NAME + "' ),0)+" + b
+                        + ", TWO = NVL((SELECT TWO FROM BK WHERE US = '" + a + "' AND NAME = '" + NAME + "'),0)+"
+                        + PRICE * b
+                        + " WHERE US = '" + a + "' AND NAME = '" + NAME + "'";
+                pstmt = con.prepareStatement(updateStr);
+                pstmt.executeUpdate();
+                System.out.print("\033\143");
+                System.out.println("장바구니에 저장되었습니다.");
+
+            } else {
+                String sql = "INSERT INTO BK VALUES ('" + a + "','" + NAME + "','" + PRICE +
+                        "','" + b + "', '"
+                        + PRICE * b
+                        + "')";
+                stmt.executeQuery(sql);
+                System.out.print("\033\143");
+                System.out.println("장바구니에 저장되었습니다.");
+
+            }
+        } catch (Exception e) {
+            System.out.print("\033\143");
+            System.out.println("입력을 확인하세요.");
         }
 
     }
@@ -455,9 +489,11 @@ public class Test02 {
         String NAME = "";
         int NUM = 0; // 추후에 수량변경을 위한 변수
         String sql = "SELECT * FROM BK WHERE US = '" + a + "'";
+        stmt = con.createStatement();
         rs = stmt.executeQuery(sql);
 
         String sql3 = "SELECT MONEY FROM PR WHERE ID = '" + a + "'";
+        stmt1 = con.createStatement();
         rs1 = stmt1.executeQuery(sql3);
         while (rs1.next()) {
             b = rs1.getInt("MONEY");
@@ -479,10 +515,14 @@ public class Test02 {
             pstmt.executeUpdate();
             pstmt = con.prepareStatement(sql2);
             pstmt.executeUpdate();
-            pstmt = con.prepareStatement(sql4);
-            pstmt.executeUpdate();
+            if (NUM > 0) {
+                pstmt = con.prepareStatement(sql4);
+                pstmt.executeUpdate();
+            }
+            System.out.print("\033\143");
             System.out.println("상품 결제 완료!");
         } else {
+            System.out.print("\033\143");
             System.out.println("잔액이 부족합니다.");
         }
 
@@ -490,13 +530,23 @@ public class Test02 {
 
     public void del1(String a, String b) { // 고객의 장바구니 물품 삭제
                                            // 물품을 일괄삭제 시키기때문에 추후 수정을통해 수량을 빼게 만들어야한다
+        String sql = "SELECT * FROM BK WHERE US = '" + a + "' AND NAME = '" + b + "'";
         try {
-            String updateStr = "DELETE FROM BK WHERE US = '" + a + "' AND NAME = '" + b + "'";
-            pstmt = con.prepareStatement(updateStr);
-            pstmt.executeUpdate();
-            System.out.println("상품삭제 성공!");
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            String c = rs.getString("NAME");
+            if (b.equals(c)) {
+                String updateStr = "DELETE FROM BK WHERE US = '" + a + "' AND NAME = '" + b + "'";
+                pstmt = con.prepareStatement(updateStr);
+                pstmt.executeUpdate();
+                System.out.print("\033\143");
+                System.out.println("상품삭제 성공!");
+            } else {
+                System.out.println("상품삭제 실패! \n 입력을 다시 확인해주세요");
+            }
         } catch (SQLException e) {
-            System.out.println("DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'");
+            System.out.print("\033\143");
             System.out.println("상품삭제 실패! \n 입력을 다시 확인해주세요");
         }
 
@@ -516,18 +566,23 @@ public class Test02 {
         String sql = "UPDATE BK SET ONE = " + b + " WHERE US = '" + ID + "' AND NAME = '" + c + "'";
         String sql2 = "SELECT * FROM BK WHERE US = '" + ID + "' AND NAME = '" + c + "'";
         int d = 0;
+        String g = "";
         stmt = con.createStatement();
         rs = stmt.executeQuery(sql2);
         while (rs.next()) {
             d = rs.getInt("PRICE");
+            g = rs.getString("NAME");
         }
         String sql1 = "UPDATE BK SET TWO = " + b * d + " WHERE US = '" + ID + "' AND NAME = '" + c + "'";
-
-        if (b > 0) {
+        if (!c.equals(g)) {
+            System.out.println("변경하실 물품의 이름을 확인하세요");
+        } else if (b > 0) {
             pstmt = con.prepareStatement(sql);
             pstmt.executeUpdate();
             pstmt = con.prepareStatement(sql1);
             pstmt.executeUpdate();
+            System.out.println(c + "를(을) " + b + "개 만큼 변경하였습니다.");
+
         } else {
             System.out.println("변경하시려는 수량을 확인해주세요");
         }
@@ -566,6 +621,7 @@ public class Test02 {
         String sql = "SELECT * FROM SELL ";
         stmt = con.createStatement();
         rs = stmt.executeQuery(sql);
+        System.out.print("\033\143");
         while (rs.next()) {
             String a = rs.getString("ID");
             String b = rs.getString("ITEMNAME");

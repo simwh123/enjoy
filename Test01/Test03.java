@@ -19,7 +19,6 @@ public class Test03 {
         JFrame jf1 = new JFrame();
         Scanner sc = new Scanner(System.in);
         JLabel jl = new JLabel();
-        ts.connect();
         boolean c = false;
         JButton btn1 = new JButton("입력");
         JButton btn2 = new JButton("닫기");

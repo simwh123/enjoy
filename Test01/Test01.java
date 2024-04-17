@@ -13,6 +13,7 @@ public class Test01 {
             String var1 = sc.nextLine();
 
             if (var1.equals("1")) {
+                System.out.print("\033\143");
                 System.out.println("회원가입");
 
                 System.out.println("아이디를 입력하세요");
@@ -37,6 +38,7 @@ public class Test01 {
                 }
 
             } else if (var1.equals("2")) {
+                System.out.print("\033\143");
                 System.out.println("로그인");
                 System.out.println("아이디를 입력하세요");
                 String var2 = sc.nextLine();
@@ -46,6 +48,7 @@ public class Test01 {
                 cone.road(var2, var3);
 
             } else if (var1.equals("3")) {
+                System.out.print("\033\143");
                 System.out.println("종료");
                 cone.databaseClose();
                 break;
