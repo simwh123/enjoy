@@ -136,8 +136,9 @@ public class Test02 {
                         }
                     } else if (var1.equals("2")) {
                         while (true) {
-
-                            System.out.println("1. 장바구니에 상품 넣기   2. 장바구니 목록   3. 장바구니 결제    4. 장바구니 비우기    5. 뒤로가기");
+                            bklst(ID);
+                            System.out
+                                    .println("1. 장바구니에 상품 넣기   2. 장바구니 상품 수량변경   3. 장바구니 결제    4. 장바구니 비우기    5. 뒤로가기");
                             String bt1 = sc.nextLine();
                             if (bt1.equals("1")) {
                                 System.out.println("상품을 골라주세요");
@@ -155,12 +156,16 @@ public class Test02 {
                                     System.out.println("입력값을 확인해 주세요.");
                                 }
                             } else if (bt1.equals("2")) {
-                                bklst(ID);
                                 while (true) {
                                     System.out.print("1. 수량 변경      2. 뒤로가기");
                                     String var2 = sc.nextLine();
                                     if (var2.equals("1")) {
+                                        System.out.println("수량을 변경할 물품의 이름을 입력하세요");
                                         String var3 = sc.nextLine();
+                                        System.out.println("수량을 변경할 숫자를 입력하세요");
+                                        int var4 = sc.nextInt();
+                                        sc.nextLine();
+                                        bkup(ID, var4, var3);
                                     } else if (var2.equals("2")) {
                                         break;
                                     } else {
@@ -467,13 +472,28 @@ public class Test02 {
 
     }
 
-    public void bkup(String ID, int money) {
-        String sql = "UPDATE BK SET ONE = NVL((SELECT ONE FROM BK WHERE ID = '" + ID
-                + "'),0) -" + money + " WHERE ID = '" + ID + "'";
+    public void bkup(String ID, int b, String c) throws SQLException {
+        String sql = "UPDATE BK SET ONE = " + b + " WHERE US = '" + ID + "' AND NAME = '" + c + "'";
+        String sql2 = "SELECT * FROM BK WHERE US = '" + ID + "' AND NAME = '" + c + "'";
+        int d = 0;
+        stmt = con.createStatement();
+        rs = stmt.executeQuery(sql2);
+        while (rs.next()) {
+            d = rs.getInt("PRICE");
+        }
+        String sql1 = "UPDATE BK SET TWO = " + b * d + " WHERE US = '" + ID + "' AND NAME = '" + c + "'";
+
+        if (b > 0) {
+            pstmt = con.prepareStatement(sql);
+            pstmt.executeUpdate();
+            pstmt = con.prepareStatement(sql1);
+            pstmt.executeUpdate();
+        } else {
+            System.out.println("변경하시려는 수량을 확인해주세요");
+        }
     }
 
-    public void road1(String a, String b, boolean c) throws SQLException { // 로그인시 등장하는 메인화면 관리자모드 / 사용자모드로 나눔 관리자모드
-                                                                           // ID: sim PW:// 1234
+    boolean ck(String a, String b, boolean c) throws SQLException { // jframe에서 로그인 확인 메소드
         String ID;
         String PW;
         String sql = "SELECT * FROM PR WHERE" + " ID =" + "'" + a + "'";
@@ -499,6 +519,7 @@ public class Test02 {
                 System.out.println("로그인실패");
             }
         }
-    }
+        return c;
+    };
 
 }
