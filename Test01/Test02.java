@@ -1,8 +1,6 @@
 package Test01;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Test02 {
+
     Test04 conTest = new Test04();
     Scanner sc = new Scanner(System.in);
     Statement stmt = null;
@@ -19,29 +18,6 @@ public class Test02 {
     Connection con = conTest.connect();
     ResultSet rs = null;
     ResultSet rs1 = null;
-
-    public void per(String ID, String PW, String NAME) { // 회원가입시 아이디 중복여부 체크
-        String sql = "SELECT * FROM PR";
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(sql);
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-        String id = ID;
-        String pw = PW;
-        String name = NAME;
-        try {
-            String updateStr = "INSERT INTO PR VALUES ('" + id + "','" + pw + "','" + name + "'" + ",''" + ")";
-            pstmt = con.prepareStatement(updateStr);
-            pstmt.executeUpdate();
-            System.out.println("회원가입 성공!");
-        } catch (SQLException e) {
-            System.out.println("아이디가 존재합니다. 다른 아이디를 입력해주세요");
-        }
-
-    }
 
     public void databaseClose() { // 데이터 베이스 닫는 메소드
         if (stmt != null) {
@@ -154,6 +130,7 @@ public class Test02 {
                                     System.out.print("1. 수량 변경      2. 뒤로가기");
                                     String var2 = sc.nextLine();
                                     if (var2.equals("1")) {
+                                        bklst(ID);
                                         System.out.println("수량을 변경할 물품의 이름을 입력하세요");
                                         String var3 = sc.nextLine();
                                         System.out.println("수량을 변경할 숫자를 입력하세요");
@@ -217,6 +194,27 @@ public class Test02 {
             System.out.println("로그인실패");
 
         }
+    }
+
+    public void per(String ID, String PW, String NAME) { // 회원가입시 아이디 중복여부 체크
+        String sql = "SELECT * FROM PR";
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        try {
+            String updateStr = "INSERT INTO PR VALUES ('" + ID + "','" + PW + "','" + NAME + "'" + ",''" + ")";
+            pstmt = con.prepareStatement(updateStr);
+            pstmt.executeUpdate();
+            System.out.println("회원가입 성공!");
+        } catch (SQLException e) {
+            System.out.println("아이디가 존재합니다. 다른 아이디를 입력해주세요");
+        }
+
     }
 
     public void money(int a, String b) throws SQLException { // 손님용 금액 충전 메소드 데이터 베이스 값 변경
@@ -308,6 +306,7 @@ public class Test02 {
                 }
 
             } else if (var1.equals("3")) {
+                System.out.print("\033\143");
                 System.out.println("등록된 상품을 삭제합니다.");
                 System.out.println("삭제할 상품의 번호, 이름을 입력하세요");
                 System.out.println("삭제할 상품의 번호");
@@ -327,6 +326,7 @@ public class Test02 {
                 lst1();
             } else if (var1.equals("99")) {
                 try {
+                    System.out.print("\033\143");
                     System.out.println("충전할 금액을 입력하세요");
                     int var2 = sc.nextInt();
                     sc.nextLine();
@@ -362,7 +362,7 @@ public class Test02 {
         boolean c = false;
         try {
             String updateStr = "DELETE FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'";
-            String sql = "SELECT * FROM DATA WHERE NO = '" + a + "'";
+            String sql = "SELECT * FROM DATA WHERE NO = '" + a + "' AND NAME = '" + b + "'";
             stmt = con.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {

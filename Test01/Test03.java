@@ -14,6 +14,7 @@ import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
 public class Test03 {
     public static void main(String[] args) {
+
         Test02 ts = new Test02();
         JFrame jf = new JFrame();
         JFrame jf1 = new JFrame();
