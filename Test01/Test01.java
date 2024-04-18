@@ -15,17 +15,25 @@ public class Test01 {
             if (var1.equals("1")) {
                 System.out.print("\033\143");
                 System.out.println("회원가입");
-
                 System.out.println("아이디를 입력하세요");
-                String var2 = sc.nextLine();
+                String var5 = sc.nextLine();
+                String var2 = var5.replaceAll(" ", "");
+
+                if (var2.length() >= 10) {
+                    System.out.print("\033\143");
+                    System.out.println("아이디를 10글자 밑으로 설정해주세요");
+                    continue;
+                }
 
                 while (true) {
                     System.out.println("비밀번호를 입력하세요 (4자 이상 8자 이하)");
                     String var3 = sc.nextLine();
-                    if (var3.length() < 4) {
+                    String var6 = var3.replaceAll(" ", "");
+
+                    if (var6.length() < 4) {
                         System.out.println("비밀번호는 4자 이상으로 입력하세요");
                         continue;
-                    } else if (var3.length() > 8) {
+                    } else if (var6.length() > 8) {
                         System.out.println("비밀번호는 8자 이하로 입력하세요");
                         continue;
                     } else {
