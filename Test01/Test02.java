@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import oracle.security.o3logon.a;
+
 public class Test02 {
 
     Test04 conTest = new Test04();

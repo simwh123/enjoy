@@ -19,9 +19,10 @@ public class Test01 {
                 String var5 = sc.nextLine();
                 String var2 = var5.replaceAll(" ", "");
 
-                if (var2.length() >= 10) {
+                if (var2.length() > 10) {
                     System.out.print("\033\143");
                     System.out.println("아이디를 10글자 밑으로 설정해주세요");
+                    System.out.println(var2.length());
                     continue;
                 }
 
@@ -40,7 +41,7 @@ public class Test01 {
                         System.out.println("이름을 입력하세요");
                         String var4 = sc.nextLine();
                         System.out.print("\033\143");
-                        cone.per(var2, var3, var4);
+                        cone.per(var2, var6, var4);
                         break;
                     }
                 }
